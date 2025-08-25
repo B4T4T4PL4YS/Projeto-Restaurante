@@ -1,0 +1,56 @@
+-- Criação do esquema Lanchonete
+CREATE SCHEMA IF NOT EXISTS Lanchonete;
+
+-- Criação da tabela Cliente
+CREATE TABLE IF NOT EXISTS Lanchonete.Cliente (
+    IdCliente INT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL,
+    Telefone INT NOT NULL,
+    Endereco VARCHAR(45) NOT NULL
+);
+
+-- Criação da tabela Entregador
+CREATE TABLE IF NOT EXISTS Lanchonete.Entregador (
+    codEntregador INT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL,
+    NumeroTelefone INT NOT NULL
+);
+
+-- Criação da tabela Cardapio
+CREATE TABLE IF NOT NOT EXISTS Lanchonete.Cardapio (
+    codCardapio INT PRIMARY KEY NOT NULL,
+    nomeSanduiche VARCHAR(45) NOT NULL,
+    preço DECIMAL(6,2) NOT NULL
+);
+
+-- Criação da tabela Pedido
+CREATE TABLE IF NOT EXISTS Lanchonete.Pedido (
+    codPedido INT PRIMARY KEY NOT NULL,
+    StatusPedido TINYINT NOT NULL,
+    DataEmissao TIMESTAMP NOT NULL,
+    quantidade SMALLINT NOT NULL,
+    IdCliente INT NOT NULL,
+    codEntregador INT NOT NULL,
+    codCardapio INT NOT NULL,
+    FOREIGN KEY(IdCliente) REFERENCES Lanchonete.Cliente(IdCliente),
+    FOREIGN KEY(codEntregador) REFERENCES Lanchonete.Entregador(codEntregador),
+    FOREIGN KEY(codCardapio) REFERENCES Lanchonete.Cardapio(codCardapio)
+);
+
+-- Inserção de dados na tabela Cliente
+INSERT INTO Lanchonete.Cliente (IdCliente, nome, Telefone, Endereco) 
+VALUES (1, 'João da Silva', 123456789, 'Rua das Flores, 100');
+
+-- Inserção de dados na tabela Entregador
+INSERT INTO Lanchonete.Entregador (codEntregador, nome, NumeroTelefone) 
+VALUES (1, 'Carlos Oliveira', 987654321);
+
+-- Inserção de dados na tabela Cardapio
+INSERT INTO Lanchonete.Cardapio (codCardapio, nomeSanduiche, preço) 
+VALUES (1, 'X-Burger', 15.50), 
+       (2, 'X-Salada', 18.00);
+
+-- Inserção de dados na tabela Pedido
+INSERT INTO Lanchonete.Pedido (codPedido, StatusPedido, DataEmissao, quantidade, IdCliente, codEntregador, codCardapio) 
+VALUES (1, 0, NOW(), 2, 1, 1, 1),
+       (2, 0, NOW(), 1, 1, 1, 2);
